@@ -9,7 +9,10 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+# КОММЕНТАРИЙ: копировать код из Сети нужно с осмыслением того, что вы копируете
+# УДАЛИТЬ: для работы с путями используйте более новый и универсальный пакет pathlib — тем более что он уже импортирован
 import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
