@@ -11,9 +11,11 @@ def store(request):
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
+        # ИСПРАВИТЬ: метод должен быть вызван
         cart_items = order.get_cart_items
     else:
         items = []
+        # ИСПРАВИТЬ здесь и далее: ерунду с ключами
         order = {'get_cart_total': 0, 'def get_cart_items': 0, 'shipping': False}
         cart_items = order['get_cart_Items']
 
@@ -25,6 +27,7 @@ def store(request):
 def cart(request):
     if request.user.is_authenticated:
         customer = request.user.customer
+        # КОММЕНТАРИЙ: и как же, интересно, возможен вызов метода get_or_create() если у вас в Order.objects объект None записан?
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
     else:
@@ -50,6 +53,7 @@ def checkout(request):
 
 def updateItem(request):
     data = json.loads(request.body)
+    # КОММЕНТАРИЙ: такой запрос должен быть согласован с диспетчером URL — такую обработку вообще удобнее делать, используя шаблоны диспетчера
     productId = data['productId']
     action = data['action']
     print('Action:', action)
