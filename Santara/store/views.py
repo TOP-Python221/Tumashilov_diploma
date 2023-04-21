@@ -1,28 +1,28 @@
-from django.shortcuts import render
 import json
+
 from django.http import JsonResponse
+from django.shortcuts import render
+
 from .models import *
 
 
 def store(request):
-
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
+        cart_items = order.get_cart_items
     else:
         items = []
         order = {'get_cart_total': 0, 'def get_cart_items': 0, 'shipping': False}
-        cartItems = order['get_cart_Items']
+        cart_items = order['get_cart_Items']
 
     products = Product.objects.all()
-    context = {'items': items,'products': products, 'cartItems': cartItems}
+    context = {'items': items,'products': products, 'cartItems': cart_items}
     return render(request, 'store/store.html', context)
 
 
 def cart(request):
-
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -35,7 +35,6 @@ def cart(request):
 
 
 def checkout(request):
-
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -56,8 +55,6 @@ def updateItem(request):
     print('Action:', action)
     print('productId:', productId)
 
-
-
     customer = request.user.customer
     product = Product.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -75,3 +72,4 @@ def updateItem(request):
         orderItem.delete()
 
     return JsonResponse({'message': 'Item was added'}, safe=False)
+
