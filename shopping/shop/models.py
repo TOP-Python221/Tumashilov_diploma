@@ -92,6 +92,7 @@ class Order(models.Model):
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     departure_date = fields.DateTimeField()
     payed = fields.BooleanField()
+    staff = models.ManyToManyField(User)
 
     def __str__(self):
         return f"({self.creation_date}) {self.buyer}"
