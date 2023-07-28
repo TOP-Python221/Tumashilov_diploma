@@ -65,12 +65,13 @@ class Address(models.Model):
     city = fields.CharField(max_length=30)
     street = fields.CharField(max_length=40)
     house = fields.CharField(max_length=5)
-    building = fields.PositiveSmallIntegerField()
-    flat = fields.PositiveSmallIntegerField()
+    building = fields.PositiveSmallIntegerField(null=True)
+    apartment = fields.PositiveSmallIntegerField()
     index = fields.CharField(max_length=6)
 
     def __str__(self):
-        return str(self.country)
+        ins = f'/{self.building}' if str(self.building) else ''
+        return f'{self.index}, {self.city}, {self.street} {self.house}{ins}, {self.apartment}'
 
 
 class Status(models.Model):
