@@ -79,18 +79,18 @@ class Status(models.Model):
     def __str__(self):
         return str(self.status)
 
+
 class Order(models.Model):
     buyer = models.ForeignKey(Buyer, on_delete=models.CASCADE)
-    basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
-    price = fields.DecimalField(max_digits=7, decimal_places=2)
-    date = fields.DateTimeField()
+    basket = models.OneToOneField(Basket, on_delete=models.CASCADE)
+    total = fields.DecimalField(max_digits=7, decimal_places=2)
+    creation_date = fields.DateTimeField()
     order_status = models.ForeignKey(Status, on_delete=models.CASCADE)
     delivery = models.ForeignKey(Delivery, on_delete=models.CASCADE)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    departure = fields.DateTimeField()
-    pay = fields.BooleanField()
+    departure_date = fields.DateTimeField()
+    payed = fields.BooleanField()
 
     def __str__(self):
-        return str(self.buyer)
+        return f"({self.creation_date}) {self.buyer}"
 
-# Create your models here.
