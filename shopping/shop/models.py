@@ -1,10 +1,11 @@
 from django.db import models
 from django.db.models import fields
 
+
 class Category(models.Model):
     name = fields.CharField(max_length=50)
     description = fields.TextField()
-    image = fields.ImageField(max_lenght=255, null=True)
+    image = models.ImageField(upload_to=..., max_lenght=255, null=True)
 
     def __str__(self):
         return str(self.name)
@@ -15,22 +16,26 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = fields.DecimalField(max_digits=7, decimal_places=2)
     availability = fields.PositiveSmallIntegerField()
-    image = fields.ImageField(upload_to=..., max_lenght=255, null=True)
+    image = models.ImageField(upload_to=..., max_lenght=255, null=True)
     discount = fields.PositiveSmallIntegerField()
+    baskets = models.ManyToManyField(
+        'Basket',
+        through='BasketProduct'
+    )
 
     def __str__(self):
         return str(self.name)
 
 
 class Basket(models.Model):
-    price = fields.DecimalField(max_digits=7, decimal_places=2)
-    discount = fields.PositiveSmallIntegerField()
+    total = fields.DecimalField(max_digits=7, decimal_places=2)
+    discount = fields.PositiveSmallIntegerField(null=True)
 
     def __str__(self):
-        return str(self.price)
+        return str(self.total)
 
 
-class Shopping_Cart(models.Model):
+class BasketProduct(models.Model):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = fields.PositiveSmallIntegerField()
