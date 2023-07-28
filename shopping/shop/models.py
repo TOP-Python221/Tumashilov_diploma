@@ -8,6 +8,9 @@ class Category(models.Model):
     description = fields.TextField()
     image = models.ImageField(upload_to=..., max_lenght=255, null=True)
 
+    class Meta:
+        db_table = 'categories'
+
     def __str__(self):
         return str(self.name)
 
@@ -24,6 +27,9 @@ class Product(models.Model):
         through='BasketProduct'
     )
 
+    class Meta:
+        db_table = 'products'
+
     def __str__(self):
         return str(self.name)
 
@@ -31,6 +37,9 @@ class Product(models.Model):
 class Basket(models.Model):
     total = fields.DecimalField(max_digits=7, decimal_places=2)
     discount = fields.PositiveSmallIntegerField(null=True)
+
+    class Meta:
+        db_table = 'baskets'
 
     def __str__(self):
         return str(self.total)
@@ -41,21 +50,27 @@ class BasketProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = fields.PositiveSmallIntegerField()
 
-    def __str__(self):
-        return str(self.basket)
+    class Meta:
+        db_table = 'products_baskets'
 
 
-class Buyer(models.Model):
+class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     discount = fields.PositiveSmallIntegerField(null=True)
     phone = fields.CharField(max_length=15, null=True)
 
+    class Meta:
+        db_table = 'clients'
+
     def __str__(self):
-        return str(self.discount)
+        return f'{self.user.username}'
 
 
 class Delivery(models.Model):
      method = fields.CharField(max_length=20)
+
+     class Meta:
+         db_table = 'deliveries'
 
      def __str__(self):
          return str(self.method)
@@ -70,6 +85,9 @@ class Address(models.Model):
     apartment = fields.PositiveSmallIntegerField()
     index = fields.CharField(max_length=6)
 
+    class Meta:
+        db_table = 'addresses'
+
     def __str__(self):
         ins = f'/{self.building}' if str(self.building) else ''
         return f'{self.index}, {self.city}, {self.street} {self.house}{ins}, {self.apartment}'
@@ -78,12 +96,15 @@ class Address(models.Model):
 class Status(models.Model):
     status = fields.CharField(max_length=45)
 
+    class Meta:
+        db_table = 'statuses'
+
     def __str__(self):
         return str(self.status)
 
 
 class Order(models.Model):
-    buyer = models.ForeignKey(Buyer, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
     basket = models.OneToOneField(Basket, on_delete=models.CASCADE)
     total = fields.DecimalField(max_digits=7, decimal_places=2)
     creation_date = fields.DateTimeField()
@@ -94,6 +115,9 @@ class Order(models.Model):
     payed = fields.BooleanField()
     staff = models.ManyToManyField(User)
 
+    class Meta:
+        db_table = 'orders'
+
     def __str__(self):
-        return f"({self.creation_date}) {self.buyer}"
+        return f"({self.creation_date}) {self.client}"
 
