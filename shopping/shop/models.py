@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import fields
 
@@ -45,9 +46,9 @@ class BasketProduct(models.Model):
 
 
 class Buyer(models.Model):
-    user = fields.
-    discount = fields.PositiveSmallIntegerField()
-    phone = fields.
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    discount = fields.PositiveSmallIntegerField(null=True)
+    phone = fields.CharField(max_length=15, null=True)
 
     def __str__(self):
         return str(self.discount)
