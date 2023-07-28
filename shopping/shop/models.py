@@ -6,7 +6,7 @@ from django.db.models import fields
 class Category(models.Model):
     name = fields.CharField(max_length=50)
     description = fields.TextField()
-    image = models.ImageField(upload_to=..., max_lenght=255, null=True)
+    image = models.ImageField(null=True)
 
     class Meta:
         db_table = 'categories'
@@ -20,7 +20,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = fields.DecimalField(max_digits=7, decimal_places=2)
     availability = fields.PositiveSmallIntegerField()
-    image = models.ImageField(upload_to=..., max_lenght=255, null=True)
+    image = models.ImageField(null=True)
     discount = fields.PositiveSmallIntegerField()
     baskets = models.ManyToManyField(
         'Basket',
