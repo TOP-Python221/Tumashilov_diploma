@@ -21,7 +21,7 @@ class Product(models.Model):
     price = fields.DecimalField(max_digits=7, decimal_places=2)
     availability = fields.PositiveSmallIntegerField()
     image = models.ImageField(null=True)
-    discount = fields.PositiveSmallIntegerField()
+    discount = fields.SmallIntegerField(default=0)
     baskets = models.ManyToManyField(
         'Basket',
         through='BasketProduct'
